@@ -1,0 +1,58 @@
+# ShardingSphere 多库多表的配置文件，库表都需要提前建好
+spring:
+  shardingsphere:
+    datasource:
+      names: m1,m2  # 虚拟数据库名称 m1,m2
+      m1:  # 配置 m1 对应实际库的属性
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/coursedb?useSSL=false&serverTimezone=UTC
+        username: root
+        password: root
+      m2: # 配置 m2 对应实际库的属性
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/coursedb2?useSSL=false&serverTimezone=UTC
+        username: root
+        password: root
+    sharding:
+      tables:    # 真实表对应分布设置
+        course:  # 逻辑表
+          actualDataNodes: m$->{1..2}.course_$->{1..2}  # 真实表分布(Groovy表达式) , sharding中的虚拟表 course 对应的是 m1库中的 course_1 ,course_2
+          keyGenerator:  # 主键生成策略
+            column: cid
+            type: SNOWFLAKE  # 雪花算法 /也可以设置 UUID
+            props:
+              worker: # 雪花算法需要的配置，可选
+                id: 1
+          databaseStrategy: # 库策略
+            inline:
+              shardingColumn: cid # 分片键
+              algorithmExpression: m$->{cid%2+1} # 分片策略
+#            standard:
+#              shardingColumn: cid
+#              preciseAlgorithmClassName: com.wang.algorithm.MyPreciseDSShardingAlgorithm
+#              rangeAlgorithmClassName: com.wang.algorithm.MyRangeDSShardingAlgorithm
+#            complex: # 多条件
+#              shardingColumns: cid,user_id # 与数据库表字段一致
+#              algorithmClassName: com.wang.algorithm.MyComplexDSShardingAlgorithm
+#            hint:
+#              algorithmClassName: com.wang.algorithm.MyHintDSShardingAlgorithm
+          tableStrategy: # 表策略
+            inline:
+              shardingColumn: cid  # 分片键
+              algorithmExpression: course_$->{(((cid+1)%4).intdiv(2)) +1}  # 分片策略，intdiv 整数相除
+#            standard:
+#              shardingColumn: cid
+#              preciseAlgorithmClassName: com.wang.algorithm.MyPreciseTableShardingAlgorithm # 精确配置
+#              rangeAlgorithmClassName: com.wang.algorithm.MyRangeTableShardingAlgorithm  #范围配置
+#            complex:
+#              shardingColumns: cid,user_id
+#              algorithmClassName: com.wang.algorithm.MyComplexTableShardingAlgorithm
+#            hint:
+#              algorithmClassName: com.wang.algorithm.MyHintTableShardingAlgorithm
+    props:
+      sql:
+        show: true # 打印实时日志
+
+

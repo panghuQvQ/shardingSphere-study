@@ -1,0 +1,35 @@
+# ShardingSphere 测试自定义生成主键配置
+spring:
+  shardingsphere:
+    datasource:
+      names: m1,m2  # 虚拟数据库名称 m0,m1
+      m1: # 配置 m0 对应实际库的属性
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/coursedb?useSSL=false&serverTimezone=UTC
+        username: root
+        password: root
+      m2: # 配置 m1 对应实际库的属性
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/coursedb2?useSSL=false&serverTimezone=UTC
+        username: root
+        password: root
+    sharding:
+      master-slave-rules:
+        ds0: # 任意命名
+          masterDataSourceName: m1 # 主库的数据源名字
+          slaveDataSourceNames:
+            - m2
+      tables:
+        t_dict:
+          actualDataNodes: ds0.t_dict
+          keyGenerator:
+            column: id
+            type: MYKEY
+
+    props:
+      sql:
+        show: true # 打印实时日志
+
+

@@ -1,0 +1,50 @@
+# ShardingSphere 配置广播表 (做联查的时候，无需配置绑定表属性)
+spring:
+  shardingsphere:
+    datasource:
+      names: m1,m2  # 虚拟数据库名称 m0,m1
+      m1: # 配置 m0 对应实际库的属性
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/coursedb?useSSL=false&serverTimezone=UTC
+        username: root
+        password: root
+      m2: # 配置 m1 对应实际库的属性
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/coursedb2?useSSL=false&serverTimezone=UTC
+        username: root
+        password: root
+    sharding:
+      tables:
+        t_dict:
+          actualDataNodes: m$->{1..2}.t_dict
+          keyGenerator:
+            column: id
+            type: SNOWFLAKE
+            props: # 可不配置此属性 worker.id
+              worker:
+                id: 1
+        t_user:
+          actualDataNodes: m$->{1..2}.t_user_$->{1..2}
+          keyGenerator:
+            column: user_id
+            type: SNOWFLAKE
+            props:
+              worker:
+                id: 1
+          databaseStrategy:
+            inline:
+              shardingColumn: ustatus
+              algorithmExpression: m$->{ustatus} # 分库策略
+          tableStrategy:
+            inline:
+              shardingColumn: ustatus
+              algorithmExpression: t_user_$->{ustatus} # 分表策略
+      broadcast-tables: # 广播表，例如：字典表（在所有库中，表数据都一致），配置此属性后，即使该表配置了分库分表策略，也没用
+        - t_dict
+    props:
+      sql:
+        show: true # 打印实时日志
+
+

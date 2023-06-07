@@ -1,0 +1,61 @@
+# ShardingSphere 多库多表，多分表策略 配置文件，库表都需要提前建好
+spring:
+  shardingsphere:
+    datasource:
+      names: m1,m2  # 虚拟数据库名称 m1,m2
+      m1: # 配置 m1 对应实际库的属性
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/coursedb?useSSL=false&serverTimezone=UTC
+        username: root
+        password: root
+      m2: # 配置 m2 对应实际库的属性
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/coursedb2?useSSL=false&serverTimezone=UTC
+        username: root
+        password: root
+    sharding:
+      tables:
+        course:
+          actualDataNodes: m$->{1..2}.course_$->{1..2}
+          keyGenerator:
+            column: cid
+            type: SNOWFLAKE
+            props:
+              worker:
+                id: 1
+          databaseStrategy:
+            standard:
+              shardingColumn: cid
+              preciseAlgorithmClassName: com.wang.algorithm.MyPreciseDSShardingAlgorithm
+              rangeAlgorithmClassName: com.wang.algorithm.MyRangeDSShardingAlgorithm
+          tableStrategy:
+            standard:
+              shardingColumn: cid
+              preciseAlgorithmClassName: com.wang.algorithm.MyPreciseTableShardingAlgorithm # 精确配置
+              rangeAlgorithmClassName: com.wang.algorithm.MyRangeTableShardingAlgorithm
+        course1:
+          actualDataNodes: m$->{1..2}.course_$->{1..2}
+          keyGenerator:
+            column: cid
+            type: SNOWFLAKE
+            props:
+              worker:
+                id: 1
+            databaseStrategy:
+              complex: # 多条件
+                shardingColumns: cid,user_id # 与数据库表字段一致
+                algorithmClassName: com.wang.algorithm.MyComplexDSShardingAlgorithm
+            tableStrategy:
+              complex:
+                shardingColumns: cid,user_id
+                algorithmClassName: com.wang.algorithm.MyComplexTableShardingAlgorithm
+      binding-tables:
+        - course
+        - course1
+    props:
+      sql:
+        show: true # 打印实时日志
+
+

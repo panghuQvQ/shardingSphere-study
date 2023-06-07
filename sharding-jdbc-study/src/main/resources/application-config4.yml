@@ -1,0 +1,42 @@
+# ShardingSphere 多库多表，按时间分表策略 配置文件，库表都需要提前建好
+spring:
+  shardingsphere:
+    datasource:
+      names: m0,m1  # 虚拟数据库名称 m0,m1
+      m0: # 配置 m0 对应实际库的属性
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/coursedb?useSSL=false&serverTimezone=UTC
+        username: root
+        password: root
+      m1: # 配置 m1 对应实际库的属性
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/coursedb2?useSSL=false&serverTimezone=UTC
+        username: root
+        password: root
+    sharding:
+      tables:
+        student:
+#          actualDataNodes: m$->{0..1}.student_$->{2022..2023}${(1..12).collect{t ->t.toString().padLeft(2,'0')}}
+          actualDataNodes: m$->{0..1}.student_$->{2023}${(4..6).collect{t ->t.toString().padLeft(2,'0')}} # 例：student_202304
+          keyGenerator:
+            column: id
+            type: SNOWFLAKE
+            props:
+              worker:
+                id: 1
+          databaseStrategy:
+            complex:
+              shardingColumns: id
+              algorithmClassName: com.wang.datetimeAlgorithm.DkShardingAlgorithm
+          tableStrategy:
+            standard:
+              shardingColumn: birthday
+              preciseAlgorithmClassName: com.wang.datetimeAlgorithm.AssessDayShardingAlgorithm
+              rangeAlgorithmClassName: com.wang.datetimeAlgorithm.AssessDayShardingAlgorithm
+    props:
+      sql:
+        show: true # 打印实时日志
+
+
