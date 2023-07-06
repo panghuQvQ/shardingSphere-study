@@ -1,5 +1,6 @@
 package com.wang.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -14,6 +15,7 @@ import lombok.Data;
 @TableName("t_user")
 public class User {
 
+    @TableId("user_id")
     private Long userId;
 
     private String username;
