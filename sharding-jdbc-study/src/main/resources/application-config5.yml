@@ -1,4 +1,4 @@
-# ShardingSphere 配置广播表 (做联查的时候，无需配置绑定表属性)
+# ShardingJDBC 配置广播表 (做联查的时候，无需配置绑定表属性)
 spring:
   shardingsphere:
     datasource:

@@ -1,4 +1,4 @@
-# ShardingSphere 单库多表的配置文件，course_1，course_2 表需要手动创建
+# ShardingJDBC 单库多表的配置文件，course_1，course_2 表需要手动创建
 spring:
   shardingsphere:
     datasource:

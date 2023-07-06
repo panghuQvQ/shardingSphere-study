@@ -1,4 +1,4 @@
-# ShardingSphere 测试自定义生成主键配置
+# ShardingJDBC 测试自定义生成主键配置
 spring:
   shardingsphere:
     datasource:

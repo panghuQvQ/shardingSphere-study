@@ -1,4 +1,4 @@
-# ShardingSphere 多库多表的配置文件，库表都需要提前建好
+# ShardingJDBC 多库多表的配置文件，库表都需要提前建好
 spring:
   shardingsphere:
     datasource:

@@ -1,4 +1,4 @@
-# ShardingSphere 配置绑定表 , 绑定的两表的分库分表策略须一致，
+# ShardingJDBC 配置绑定表 , 绑定的两表的分库分表策略须一致，
 # 例子： 订单表，订单详情表，以orderId 作为关联键
 spring:
   shardingsphere:

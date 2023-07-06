@@ -1,4 +1,4 @@
-# ShardingSphere 配置 读写分离(应用层面)
+# ShardingJDBC 配置 读写分离(应用层面)
 spring:
   shardingsphere:
     datasource:
