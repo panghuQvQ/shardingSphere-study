@@ -2,6 +2,7 @@ package com.wang.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
@@ -12,6 +13,7 @@ import lombok.Data;
  * @createTime 2023年04月18日 10:19:00
  */
 @Data
+@TableName(value = "course")
 public class Course {
     @TableId
     private Long cid;
