@@ -8,6 +8,15 @@ sharding-jdbc-study  通过 ShardingJDBC 实现分库分表
 ### 主键生成策略
 可查看 19-ShardingProxy分库分表实战及同类产品选型对比： 1:23.00 观看视频介绍
 利用 SPI 机制, resources--->META-INF.services--->org.apache.shardingsphere.spi.keygen.ShardingKeyGenerator
+- 如何打包成jar包，放入sharding proxy中使用？
+  1. 打开 File--->Project Structure
+  2. 点击 Artifacts, 添加 ![img.png](sharding-jdbc-study/src/main/resources/img/img.png)
+  3. ![img_1.png](sharding-jdbc-study/src/main/resources/img/img_1.png)
+  4. ![img_2.png](sharding-jdbc-study/src/main/resources/img/img_2.png)
+  5. ![img_3.png](sharding-jdbc-study/src/main/resources/img/img_3.png)
+  6. 打开 Build--->Build Artifacts
+  7. ![img.png](sharding-jdbc-study/src/main/resources/img/img_4.png)
+  8. 将打好的包，复制于 sharding proxy的 lib包下
 
 ### Sharding JDBC 使用 Base 柔性事务
 1. 启动 nacos 与 seata (包括将seata配置上传至 nacos)
