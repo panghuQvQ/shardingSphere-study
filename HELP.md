@@ -1,11 +1,12 @@
-实现动态切换数据源
-ds-framework：对每个 SQL 提前配置好，属于哪个数据源
-dynamic-ds：通过前端传过来的参数，判断选择哪个数据源
+## 目录大纲
+- 实现动态切换数据源
+  - ds-framework：对每个 SQL 提前配置好，属于哪个数据源
+  - dynamic-ds：通过前端传过来的参数，判断选择哪个数据源
+- sharding-jdbc-study 通过 ShardingJDBC 实现分库分表,
+  - application-config9.yml 为 sharding proxy的连接配置
 
-sharding-jdbc-study  通过 ShardingJDBC 实现分库分表
 
-
-### 主键生成策略
+### 1.主键生成策略
 可查看 19-ShardingProxy分库分表实战及同类产品选型对比： 1:23.00 观看视频介绍
 利用 SPI 机制, resources--->META-INF.services--->org.apache.shardingsphere.spi.keygen.ShardingKeyGenerator
 - 如何打包成jar包，放入sharding proxy中使用？
@@ -18,7 +19,7 @@ sharding-jdbc-study  通过 ShardingJDBC 实现分库分表
   7. ![img.png](sharding-jdbc-study/src/main/resources/img/img_4.png)
   8. 将打好的包，复制于 sharding proxy的 lib包下
 
-### Sharding JDBC 使用 Base 柔性事务
+### 2.Sharding JDBC 使用 Base 柔性事务
 1. 启动 nacos 与 seata (包括将seata配置上传至 nacos)
 2. 在classpath 下 添加 registry.cof、seat.conf 两个配置
 3. 使用 @Transactional
