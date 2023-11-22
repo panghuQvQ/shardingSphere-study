@@ -12,19 +12,19 @@ spring:
           url: jdbc:mysql://localhost:3306/coursedb?serverTimezone=UTC
           username: root
           password: root
-          initial-size: 1
-          min-idle: 1
-          max-active: 20
-          test-on-borrow: true
+#          initial-size: 1
+#          min-idle: 1
+#          max-active: 20
+#          test-on-borrow: true
           driver-class-name: com.mysql.cj.jdbc.Driver
         write:
           url: jdbc:mysql://localhost:3306/coursedb2?serverTimezone=UTC
           username: root
           password: root
-          initial-size: 1
-          min-idle: 1
-          max-active: 20
-          test-on-borrow: true
+#          initial-size: 1  # 好像没有这些属性，可以删掉也无妨
+#          min-idle: 1
+#          max-active: 20
+#          test-on-borrow: true
           driver-class-name: com.mysql.cj.jdbc.Driver
 
 server:
